@@ -35,4 +35,12 @@ var PhotoSchema = new mongoose.Schema({
   galleryName: String
 });
 
+var FacebookUserSchema = new mongoose.Schema({
+  facebookId: String,
+  token: String,
+  name: String,
+  email: String
+});
+
 module.exports.photo = mongoose.model('Photo', PhotoSchema);
+module.exports.facebook = mongoose.model('FacebookUser', FacebookUserSchema);

@@ -1,16 +1,8 @@
 <nav-bar></nav-bar>
-  <div class="student-container">
-    <button class="btn btn-warning" style="float:right" ng-click="ctrl.goToClassmates()">Go Back</button>
-  </div>
-<div class="container-fluid">
+<div class="container inyourface">
   <div class="row">
-    <div class="col-xs-6">
-      <h1 class="student-header" align="center">Student Summary</h1>
-      <p class="student-name">Student Name: {{ctrl.student}}</p>
-      <student-attribute-entry analyze="ctrl.analyze" detect="ctrl.detect"/></student-attribute-entry>
-    </div>
-    <div class="col-xs-6">
-     <img class="placeholder-image" ng-src={{ctrl.image||"../assets/loading.gif"}} />
+    <div class="col-md-12">
+      <span>Student: {{ctrl.student}} {{ctrl.attributes}}</span>
     </div>
   </div>
 </div>

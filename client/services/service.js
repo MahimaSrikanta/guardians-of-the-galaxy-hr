@@ -19,7 +19,7 @@ app.service('service', function($http, Upload) {
     console.log ('get student service');
     var options = {
       method: 'GET',
-      url: '/classmates/'+student
+      url: '/classmates/' + student,
     };
 
     $http(options)
@@ -35,7 +35,7 @@ app.service('service', function($http, Upload) {
 
   this.picCallback = function(response) {
     console.log ('this', this);
-    console.log('FROM PIC CALLBACK', response.data)
+    console.log('FROM PIC CALLBACK', response.data);
     this.persons = response.data.map(person => {
       var confidence = (person.confidence * 100).toFixed(1);
       return {
@@ -45,4 +45,5 @@ app.service('service', function($http, Upload) {
       };
     });
   };
+
 });

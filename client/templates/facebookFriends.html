@@ -1,0 +1,30 @@
+<nav-bar></nav-bar>
+<div class="container inyourface">
+  <div class="row">
+    <div class="col-md-12">
+      <webcam-module></webcam-module>
+    </div>
+  </div>
+  <div class = "row">
+    <div class="col-md-12">
+      <!--<person-table persons="ctrl.persons"></person-table>-->
+      <h4 class= "text-center">Facebook FriendsList</h4>
+      <div id="person-table-container">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-xs-4 person-table-entry-align" ng-repeat="($index, person) in ctrl.friends track by $index">
+            <div>
+              <!--<person-table-entry  person="person" index="$index"></person-table-entry>-->
+              <div id="person-table-entry-container">
+                <span>{{person.name}}</span>
+                <div>
+                <img class="person-table-entry-pic" ng-src={{person.picture.data.url}} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

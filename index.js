@@ -16,13 +16,41 @@ const kairos = require('./server/kairos');
 Promise.promisifyAll(kairos);
 const celebrityBucks = require('./server/celebrity-bucks');
 Promise.promisifyAll(celebrityBucks);
-
 const database = require('./database');
+
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const passport = require('passport');
+const FB = require('fb');
+const fbAuth = require('./server/facebookAuth')(passport);
+const facebook = require('./server/routers/facebook');
 
 app.use(express.static(__dirname + '/client'));
 app.use('/node_modules', express.static(__dirname + '/node_modules'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 app.use(bodyParser.json());
+app.use(cookieParser());
+
+//Route for facebook
+app.use('/facebook', facebook);
+
+
+//Passport session settings
+app.use(session({
+  secret: 'InYourFace', // session secret
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+
+//
+// app.use(function (req, res, next) {
+//   res.locals.login = req.isAuthenticated();
+//   next();
+// });
+
+
 
 //Receive enncoded image and decode and save as pic.jpg
 app.post('/upload/url/:gallery', (req, res) => {
@@ -50,6 +78,52 @@ app.post('/upload/url/:gallery', (req, res) => {
   });
 });
 
+//Facebook Auth
+app.get('/auth/facebook',
+  passport.authenticate('facebook', { scope: ['email', 'user_friends'] }));
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/' }),
+  function(req, res) {
+    res.redirect('/#/friends');
+  });
+
+//Facebook logout
+app.get('/logout', function(req, res, next) {
+  console.log('Request user', req.user);
+  // FB.setAccessToken(req.user.token);
+  // console.log('before', req.user);
+  // req.session.destroy(function (err) {
+  //   if (err) { console.log(err); }
+  //  // fbAuth.deleteSession(req.user);
+  //   // database.facebook.findOneAndUpdateAsync({facebookId: req.user.facebookId},
+  //   // {$set: {token: ''}}, {new: true})
+  //   // .then(function(result) {
+  //   //   req.logout();
+  //   //   res.send({'user': req.user });
+  //   // })
+  //   // .catch(function(err) {
+  //   //   res.send(err);
+  //   // });
+  //     req.logout();
+  // res.send({'user': req.user });
+    
+  // });
+  // FB.api('/me/permissions', 'DELETE', function(response) {
+  //   console.log(response); //gives true on app delete success 
+  // });
+  req.logout();
+  res.send({'user': req.user });
+
+});
+
+//Facebook isLoggedIn middleware
+app.get('/isLoggedIn', function(req, res) {
+  res.send({'auth': req.isAuthenticated(), 'user': req.user});
+});
+
+
+
 app.get('/classmates', (req, res) => {
   var galleryName = 'hrsf-76';
   console.log ('classmates get route');
@@ -65,7 +139,7 @@ app.get('/classmates', (req, res) => {
     })
   }, (error, response, body) => {
     if (error) {
-      console.log (err);
+      console.log (error);
     } else {
       console.log('Status:', response.statusCode);
       console.log('Headers:', JSON.stringify(response.headers));
@@ -78,29 +152,15 @@ app.get('/classmates', (req, res) => {
 app.get('/classmates/:student', (req, res) => {
   var galleryName = 'hrsf-76';
   console.log ('classmates student get route');
-  var studentInfo = {};
-  studentInfo.studentName = req.params.student;
-  studentInfo.filePath;
-  studentInfo.detectResult;
-  studentInfo.studentId;
+  var student = req.params.student;
 
-  database.photo.findAsync({userName: studentInfo.studentName, galleryName: galleryName})
+  database.photo.findAsync({userName: student, galleryName: galleryName})
   .then((result) => {
-    studentInfo.filePath = result[0].filePath;
-    return kairos.detectAsync(studentInfo.filePath);
+    return kairos.detectAsync(result[0].filePath);
   })
-  .then((result) => {
-    studentInfo.detectResult = JSON.parse(result);
-    return kairos.postAsync(studentInfo.filePath);
+  .then((results) => {
+    res.send(results);
   })
-  .then((result) => {
-    studentInfo.studentId = JSON.parse(result).id;
-    return kairos.analyzeAsync(studentInfo.studentId);
-  })
-  .then((result) => {
-    studentInfo.analyzeResult = JSON.parse(result);
-    res.send(studentInfo);
-  }) 
   .catch((error) => {
     console.log ('error', error);
   });

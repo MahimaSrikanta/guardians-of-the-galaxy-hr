@@ -175,32 +175,22 @@ body {
   font-size: 1.2em;
   margin-top: 10px;
 }
-
-.placeholder-image {
-  width: 800px;
-  height: 537px;
-  display: inline;
-  margin: 0 auto;
-  border: dotted 20px;
+/*facebook Login*/
+.navbar-login
+{
+    width: 305px;
+    padding: 10px;
+    padding-bottom: 0px;
 }
 
-.student-container {
-  margin: 50px 0px 50px 0px;
+.navbar-login-session
+{
+    padding: 10px;
+    padding-bottom: 0px;
+    padding-top: 0px;
 }
 
-.student-attributes {
-  font-family: "Scada";
-  background-color: white;
-  font-size: 25px;
-}
-
-.student-header {
-  font-family:"Scada";
-  padding: 20px;
-  background-color: white;
-}
-
-.student-name {
-  background-color: white;
-  font-size: 25px;
+.icon-size
+{
+    font-size: 57px;
 }

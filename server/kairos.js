@@ -135,7 +135,7 @@ const post = (imageUrl, callback) => {
 
 module.exports.post = post;
 
-const analyze = (id, callback) => {
+const analyze = (id) => {
   console.log ('kairos analyze');
   const options = {
     method: 'GET',

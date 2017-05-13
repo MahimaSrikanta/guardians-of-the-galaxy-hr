@@ -1,3 +1,4 @@
+
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -8,7 +9,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#"><i class="fa fa-camera-retro" aria-hidden="true"></i> In Your Face</a>
+      <a class="navbar-brand" href="/#/"><i class="fa fa-camera-retro" aria-hidden="true"></i> In Your Face</a>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -18,10 +19,42 @@
           <ul class="dropdown-menu">
             <li><a href="#/classmates">Classmates</a></li>
             <li><a href="#/celebrities">Celebrities</a></li>
-            <li><a href="#/friends">Friends</a></li>
+            <li><a href="/auth/facebook">Facebook Friends</a></li>
             <li role="separator" class="divider"></li>
             <li><a href="#/photobooth">Photo Booth</a></li>
           </ul>
+        </li>
+        <!--<button class="btn btn-danger navbar-btn" ng-click= "ctrl.logout()">Logout</button>-->
+      </ul>
+      <!--facebook user profile display-->
+      <ul ng-show = "ctrl.displayUser"class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="glyphicon glyphicon-user"></span>
+            <strong>{{ctrl.userDetails.name.split(" ")[0]}}</strong>
+            <span class="glyphicon glyphicon-chevron-down"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <div class="navbar-login">
+                <div class="row">
+                  <div class="col-lg-4">
+                    <p class="text-center">
+                       <!--<span class="glyphicon glyphicon-user icon-size"></span>-->
+                       <img ng-src= "{{ctrl.userFullDetails.data.picture.data.url}}">
+                      </p>
+                    </div>
+                    <div class="col-lg-8">
+                      <p class="text-left"><strong>{{ctrl.userDetails.name}}</strong></p>
+                      <p class="text-left">{{ctrl.userFullDetails.data.email}}</p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="divider"></li>
+              <li><a href="#"ng-click= "ctrl.logout()">Sign Out <span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+              <!--<li><a href="#">Unlink Account<span class="glyphicon glyphicon-link pull-right"></span></a></li>-->
+            </ul>
         </li>
       </ul>
     </div><!-- /.navbar-collapse -->
